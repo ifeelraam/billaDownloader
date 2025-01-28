@@ -1,2 +1,10 @@
 python-telegram-bot>=20.0
 requests
+python-dotenv
+spotipy
+gaana
+pyjiosaavn
+instaloader
+pytube
+facebook-sdk
+terabox-python
