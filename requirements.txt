@@ -17,7 +17,7 @@ spotipy==2.18.0
 instaloader==4.14.1
 
 # Facebook scraper library
-facebook-scraper==0.2.0
+facebook-scraper==0.2.59
 
 # BeautifulSoup for scraping web pages (used in multiple platforms)
 beautifulsoup4==4.11.1
