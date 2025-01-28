@@ -1,8 +1,9 @@
-# Python environment
-botenv/
 
-# IDE config files
-.vscode/
+### **6. `.gitignore`**
 
-# Environment variables file
-.env
+```bash
+# Ignore virtual environment and other temporary files
+venv/
+__pycache__/
+config.env
+*.log
