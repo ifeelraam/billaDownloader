@@ -5,7 +5,7 @@ python-telegram-bot==20.0
 requests==2.31.0
 
 # yt-dlp (for YouTube, Facebook, Instagram, etc. video downloads)
-yt-dlp==2023.12.30
+yt-dlp==2021.3.7
 
 # PyTube (for YouTube video downloads)
 pytube==12.1.0
