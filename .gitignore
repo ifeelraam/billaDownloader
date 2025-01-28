@@ -1,0 +1,8 @@
+# Python environment
+botenv/
+
+# IDE config files
+.vscode/
+
+# Environment variables file
+.env
