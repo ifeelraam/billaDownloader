@@ -97,8 +97,7 @@ async def instagram_login(update: Update, context: CallbackContext) -> None:
         # Attempt to log in with the provided credentials
         instaloader_session = instaloader.Instaloader()
         instaloader_session.login(username, password)
-        global instagram_logged_in
-        instagram_logged_in = True
+        context.user_data['instaloader_session'] = instaloader_session  # Save session
         await update.message.reply_text("Instagram login successful! You can now download private media.")
     except Exception as e:
         await update.message.reply_text(f"Instagram login failed: {str(e)}")
@@ -108,10 +107,9 @@ async def facebook_login(update: Update, context: CallbackContext) -> None:
     username, password = update.message.text.split(" ", 1)
 
     try:
-        # Authenticate with Facebook using GraphAPI or other methods
+        # Authenticate with Facebook using GraphAPI
         facebook_graph = GraphAPI(access_token=f"{username}|{password}")
-        global facebook_logged_in
-        facebook_logged_in = True
+        context.user_data['facebook_graph'] = facebook_graph  # Save session
         await update.message.reply_text("Facebook login successful! You can now download private videos.")
     except Exception as e:
         await update.message.reply_text(f"Facebook login failed: {str(e)}")
@@ -128,14 +126,14 @@ async def download_media(update: Update, context: CallbackContext) -> None:
             result = download_gaana(url)
         elif platform == "jiosaavn":
             result = download_jiosaavn(url)
-        elif platform == "instagram_reel" and instagram_logged_in:
-            result = download_instagram_reel(url)
-        elif platform == "instagram_story" and instagram_logged_in:
-            result = download_instagram_story(url)
+        elif platform == "instagram_reel" and 'instaloader_session' in context.user_data:
+            result = download_instagram_reel(url, context.user_data['instaloader_session'])
+        elif platform == "instagram_story" and 'instaloader_session' in context.user_data:
+            result = download_instagram_story(url, context.user_data['instaloader_session'])
         elif platform == "youtube":
             result = download_youtube(url)
-        elif platform == "facebook" and facebook_logged_in:
-            result = download_facebook(url)
+        elif platform == "facebook" and 'facebook_graph' in context.user_data:
+            result = download_facebook(url, context.user_data['facebook_graph'])
         elif platform == "terabox":
             result = download_terabox(url)
         else:
