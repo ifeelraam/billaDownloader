@@ -1,7 +1,7 @@
 import os
 import logging
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, CallbackQueryHandler, filters
 from dotenv import load_dotenv
 from iquality.downloader import (
     download_quality, download_instagram_reel, download_instagram_story,
@@ -29,8 +29,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 # Start command to display initial message
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(
+async def start(update: Update, context: CallbackContext) -> None:
+    await update.message.reply_text(
         "Welcome to the Billa media downloader bot!\nChoose the media type you want to download  dev @ifeelraam:",
         reply_markup=InlineKeyboardMarkup([[
             InlineKeyboardButton("Download Video", callback_data='video'),
@@ -39,11 +39,11 @@ def start(update: Update, context: CallbackContext) -> None:
     )
 
 # Show platform options
-def platform_choice(update: Update, context: CallbackContext) -> None:
+async def platform_choice(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
-    query.answer()  # Acknowledge the callback
+    await query.answer()  # Acknowledge the callback
 
-    update.message.reply_text(
+    await update.message.reply_text(
         "Where would you like to download from? Choose a platform:",
         reply_markup=InlineKeyboardMarkup([[
             InlineKeyboardButton("Spotify", callback_data="spotify"),
@@ -58,39 +58,39 @@ def platform_choice(update: Update, context: CallbackContext) -> None:
     )
 
 # Handle platform selection
-def handle_platform_selection(update: Update, context: CallbackContext) -> None:
+async def handle_platform_selection(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
-    query.answer()
+    await query.answer()
 
     platform = query.data
 
     if platform == "spotify":
-        update.message.reply_text("Please send the Spotify song URL.")
+        await update.message.reply_text("Please send the Spotify song URL.")
         context.user_data['platform'] = "spotify"
     elif platform == "gaana":
-        update.message.reply_text("Please send the Gaana song URL.")
+        await update.message.reply_text("Please send the Gaana song URL.")
         context.user_data['platform'] = "gaana"
     elif platform == "jiosaavn":
-        update.message.reply_text("Please send the JioSaavn song URL.")
+        await update.message.reply_text("Please send the JioSaavn song URL.")
         context.user_data['platform'] = "jiosaavn"
     elif platform == "instagram_reel":
-        update.message.reply_text("Please log in to Instagram with your username and password to download private Reels.")
+        await update.message.reply_text("Please log in to Instagram with your username and password to download private Reels.")
         context.user_data['platform'] = "instagram_reel"
     elif platform == "instagram_story":
-        update.message.reply_text("Please log in to Instagram with your username and password to download private Stories.")
+        await update.message.reply_text("Please log in to Instagram with your username and password to download private Stories.")
         context.user_data['platform'] = "instagram_story"
     elif platform == "youtube":
-        update.message.reply_text("Please send the YouTube video URL.")
+        await update.message.reply_text("Please send the YouTube video URL.")
         context.user_data['platform'] = "youtube"
     elif platform == "facebook":
-        update.message.reply_text("Please log in to Facebook with your username and password to download private videos.")
+        await update.message.reply_text("Please log in to Facebook with your username and password to download private videos.")
         context.user_data['platform'] = "facebook"
     elif platform == "terabox":
-        update.message.reply_text("Please send the TeraBox URL.")
+        await update.message.reply_text("Please send the TeraBox URL.")
         context.user_data['platform'] = "terabox"
 
 # Instagram Login for private media
-def instagram_login(update: Update, context: CallbackContext) -> None:
+async def instagram_login(update: Update, context: CallbackContext) -> None:
     username, password = update.message.text.split(" ", 1)
 
     try:
@@ -99,12 +99,12 @@ def instagram_login(update: Update, context: CallbackContext) -> None:
         instaloader_session.login(username, password)
         global instagram_logged_in
         instagram_logged_in = True
-        update.message.reply_text("Instagram login successful! You can now download private media.")
+        await update.message.reply_text("Instagram login successful! You can now download private media.")
     except Exception as e:
-        update.message.reply_text(f"Instagram login failed: {str(e)}")
+        await update.message.reply_text(f"Instagram login failed: {str(e)}")
 
 # Facebook Login for private media
-def facebook_login(update: Update, context: CallbackContext) -> None:
+async def facebook_login(update: Update, context: CallbackContext) -> None:
     username, password = update.message.text.split(" ", 1)
 
     try:
@@ -112,12 +112,12 @@ def facebook_login(update: Update, context: CallbackContext) -> None:
         facebook_graph = GraphAPI(access_token=f"{username}|{password}")
         global facebook_logged_in
         facebook_logged_in = True
-        update.message.reply_text("Facebook login successful! You can now download private videos.")
+        await update.message.reply_text("Facebook login successful! You can now download private videos.")
     except Exception as e:
-        update.message.reply_text(f"Facebook login failed: {str(e)}")
+        await update.message.reply_text(f"Facebook login failed: {str(e)}")
 
 # Download media based on user input
-def download_media(update: Update, context: CallbackContext) -> None:
+async def download_media(update: Update, context: CallbackContext) -> None:
     url = update.message.text
     platform = context.user_data.get('platform')
 
@@ -141,31 +141,28 @@ def download_media(update: Update, context: CallbackContext) -> None:
         else:
             result = "Login required to download this media."
 
-        update.message.reply_text(f"Download successful: {result}")
+        await update.message.reply_text(f"Download successful: {result}")
 
     except Exception as e:
-        update.message.reply_text(f"Error: {str(e)}")
+        await update.message.reply_text(f"Error: {str(e)}")
 
 # Handle errors globally
-def error(update: Update, context: CallbackContext) -> None:
+async def error(update: Update, context: CallbackContext) -> None:
     logger.warning(f"Update {update} caused error {context.error}")
-    update.message.reply_text(f"Oops! Something went wrong. Please try again later.")
+    await update.message.reply_text(f"Oops! Something went wrong. Please try again later.")
 
 def main():
-    updater = Updater(API_TOKEN, use_context=True)
-    dispatcher = updater.dispatcher
+    application = Application.builder().token(API_TOKEN).build()
 
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CallbackQueryHandler(platform_choice, pattern='^(video|audio)$'))
-    dispatcher.add_handler(CallbackQueryHandler(handle_platform_selection, pattern='^(spotify|gaana|jiosaavn|instagram_reel|instagram_story|youtube|facebook|terabox)$'))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, download_media))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, instagram_login))  # Handle Instagram login
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, facebook_login))  # Handle Facebook login
-    dispatcher.add_error_handler(error)
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CallbackQueryHandler(platform_choice, pattern='^(video|audio)$'))
+    application.add_handler(CallbackQueryHandler(handle_platform_selection, pattern='^(spotify|gaana|jiosaavn|instagram_reel|instagram_story|youtube|facebook|terabox)$'))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, download_media))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, instagram_login))  # Handle Instagram login
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, facebook_login))  # Handle Facebook login
+    application.add_error_handler(error)
 
-    updater.start_polling()
-    updater.idle()
+    application.run_polling()
 
 if __name__ == '__main__':
     main()
-
