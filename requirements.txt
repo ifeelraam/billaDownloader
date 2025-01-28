@@ -35,7 +35,7 @@ aiohttp==3.8.3
 ffmpeg-python==0.2.0
 
 # Gaana library for downloading music from Gaana
-gaana==0.0.7
+gaana==0.0.3
 
 # Optional: If you want to handle custom media files (audio, video)
 pydub==0.25.1
