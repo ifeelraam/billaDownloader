@@ -8,19 +8,6 @@
 - SUPPORT GROUP CHAT : @BillaCore
 - SUPPORT CHANNEL : @BillaSpace
 
-## Setup:
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ifeelraam/billaDownloader.git
-```bash
-pip install -r requirements.txt
-
-```bash
-python3 bot.py
- Or
-python bot.py
-
-
 
    
 4. Command List for the Bot
@@ -47,3 +34,24 @@ Login for Instagram/Facebook:
 
 If the user wants to download private media (Instagram Reels, Stories, or Facebook videos), they will need to log in with their Instagram or Facebook credentials.
 The bot will authenticate the user and allow them to download private media only if they are logged in.
+
+
+
+
+## Setup Locally In VPS or Termux {TERMUX ACQUIRES DEVICE STORAGE WHEN FILES ARE DOWNLOADED }:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ifeelraam/billaDownloader.git
+
+2. install requirements to run the bot in your vps
+ ```bash
+pip install -r requirements.txt
+
+3. vi config.env for  bot variables
+press ctrl +c when done  &  :wq to save 
+
+4. run the bot { if not works create virtual environmnt then run cmd} 
+python3 bot.py
+ Or
+python bot.py
+
