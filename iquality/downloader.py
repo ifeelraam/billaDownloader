@@ -1,6 +1,11 @@
+import os
 import instaloader
 from facebook import GraphAPI
 from pytube import YouTube
+
+# Ensure the output directory exists for YouTube downloads
+if not os.path.exists("downloads/videos/"):
+    os.makedirs("downloads/videos/")
 
 # Instagram Reels download
 def download_instagram_reel(url):
