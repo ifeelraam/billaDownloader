@@ -115,7 +115,7 @@ async def facebook_login(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         await update.message.reply_text(f"Facebook login failed: {str(e)}")
 
-# Download media based on user input
+# Assuming you already have login functionalities implemented for Instagram and Facebook
 async def download_media(update: Update, context: CallbackContext) -> None:
     url = update.message.text
     platform = context.user_data.get('platform')
@@ -128,19 +128,22 @@ async def download_media(update: Update, context: CallbackContext) -> None:
         elif platform == "jiosaavn":
             result = download_jiosaavn(url)
         elif platform == "instagram_reel" and instagram_logged_in:
-            result = download_instagram_reel(url)
+            result = download_instagram_reel(url, instaloader_session)  # pass session
         elif platform == "instagram_story" and instagram_logged_in:
-            result = download_instagram_story(url)
+            result = download_instagram_story(url, instaloader_session)  # pass session
         elif platform == "youtube":
             result = download_youtube(url)
         elif platform == "facebook" and facebook_logged_in:
-            result = download_facebook(url)
+            result = download_facebook(url, facebook_graph)  # pass login info
         elif platform == "terabox":
             result = download_terabox(url)
         else:
             result = "Login required to download this media."
 
         await update.message.reply_text(f"Download successful: {result}")
+
+    except Exception as e:
+        await update.message.reply_text(f"Error: {str(e)}")
 
     except Exception as e:
         await update.message.reply_text(f"Error: {str(e)}")
