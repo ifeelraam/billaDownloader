@@ -17,6 +17,9 @@ load_dotenv()
 # Telegram Bot API token
 API_TOKEN = os.getenv("API_TOKEN")
 
+# Print the API token for debugging (ensure it's loaded correctly)
+print(f"API Token: {API_TOKEN}")
+
 # Instagram and Facebook session variables
 instagram_logged_in = False
 facebook_logged_in = False
@@ -145,17 +148,21 @@ async def download_media(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         await update.message.reply_text(f"Error: {str(e)}")
 
-    except Exception as e:
-        await update.message.reply_text(f"Error: {str(e)}")
-
 # Handle errors globally
 async def error(update: Update, context: CallbackContext) -> None:
     logger.warning(f"Update {update} caused error {context.error}")
     await update.message.reply_text(f"Oops! Something went wrong. Please try again later.")
 
 def main():
+    # Ensure the API_TOKEN is not None
+    if API_TOKEN is None:
+        print("Error: API_TOKEN not found in environment variables.")
+        exit()
+
+    # Create the application with the token
     application = Application.builder().token(API_TOKEN).build()
 
+    # Add handlers to the application
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CallbackQueryHandler(platform_choice, pattern='^(video|audio)$'))
     application.add_handler(CallbackQueryHandler(handle_platform_selection, pattern='^(spotify|gaana|jiosaavn|instagram_reel|instagram_story|youtube|facebook|terabox)$'))
@@ -164,6 +171,7 @@ def main():
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, facebook_login))  # Handle Facebook login
     application.add_error_handler(error)
 
+    # Run the bot
     application.run_polling()
 
 if __name__ == '__main__':
