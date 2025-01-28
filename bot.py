@@ -1,6 +1,6 @@
 import os
 import logging
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, CallbackQueryHandler, filters
 from dotenv import load_dotenv
 from iquality.downloader import (
@@ -8,7 +8,6 @@ from iquality.downloader import (
     download_facebook, download_youtube, download_spotify, download_gaana,
     download_jiosaavn, download_terabox
 )
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 import instaloader
 from facebook import GraphAPI
 
@@ -97,7 +96,8 @@ async def instagram_login(update: Update, context: CallbackContext) -> None:
         # Attempt to log in with the provided credentials
         instaloader_session = instaloader.Instaloader()
         instaloader_session.login(username, password)
-        context.user_data['instaloader_session'] = instaloader_session  # Save session
+        global instagram_logged_in
+        instagram_logged_in = True
         await update.message.reply_text("Instagram login successful! You can now download private media.")
     except Exception as e:
         await update.message.reply_text(f"Instagram login failed: {str(e)}")
@@ -107,9 +107,10 @@ async def facebook_login(update: Update, context: CallbackContext) -> None:
     username, password = update.message.text.split(" ", 1)
 
     try:
-        # Authenticate with Facebook using GraphAPI
+        # Authenticate with Facebook using GraphAPI or other methods
         facebook_graph = GraphAPI(access_token=f"{username}|{password}")
-        context.user_data['facebook_graph'] = facebook_graph  # Save session
+        global facebook_logged_in
+        facebook_logged_in = True
         await update.message.reply_text("Facebook login successful! You can now download private videos.")
     except Exception as e:
         await update.message.reply_text(f"Facebook login failed: {str(e)}")
@@ -126,14 +127,14 @@ async def download_media(update: Update, context: CallbackContext) -> None:
             result = download_gaana(url)
         elif platform == "jiosaavn":
             result = download_jiosaavn(url)
-        elif platform == "instagram_reel" and 'instaloader_session' in context.user_data:
-            result = download_instagram_reel(url, context.user_data['instaloader_session'])
-        elif platform == "instagram_story" and 'instaloader_session' in context.user_data:
-            result = download_instagram_story(url, context.user_data['instaloader_session'])
+        elif platform == "instagram_reel" and instagram_logged_in:
+            result = download_instagram_reel(url)
+        elif platform == "instagram_story" and instagram_logged_in:
+            result = download_instagram_story(url)
         elif platform == "youtube":
             result = download_youtube(url)
-        elif platform == "facebook" and 'facebook_graph' in context.user_data:
-            result = download_facebook(url, context.user_data['facebook_graph'])
+        elif platform == "facebook" and facebook_logged_in:
+            result = download_facebook(url)
         elif platform == "terabox":
             result = download_terabox(url)
         else:
