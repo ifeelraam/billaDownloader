@@ -20,7 +20,7 @@ instaloader==4.14.1
 facebook-scraper==0.2.59
 
 # BeautifulSoup for scraping web pages (used in multiple platforms)
-beautifulsoup4==4.11.1
+beautifulsoup4==4.3.2
 
 # LXML dependency for BeautifulSoup
 lxml==4.9.3
