@@ -1,6 +1,6 @@
 python-telegram-bot==20.0  # The version of python-telegram-bot that supports the bot functions
 requests==2.28.2           # For making HTTP requests (used in media downloads)
-yt-dlp==2023.01.28         # For downloading videos from YouTube and other platforms
+yt-dlp==2023.12.26         # For downloading videos from YouTube and other platforms
 pytube==12.1.0             # For downloading YouTube videos (if needed)
 pyjiosaavn==1.0.4          # For downloading music from JioSaavn
 spotipy==2.18.0            # For interfacing with the Spotify API
