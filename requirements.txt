@@ -1,14 +1,45 @@
-python-telegram-bot==20.0  # The version of python-telegram-bot that supports the bot functions
-requests==2.28.2           # For making HTTP requests (used in media downloads)
-yt-dlp                     # For downloading videos from YouTube and other platforms
-pytube==12.1.0             # For downloading YouTube videos (if needed)
-spotipy==2.18.0            # For interfacing with the Spotify API
-instaloader==4.8.9         # For downloading Instagram content (Reels, Stories, etc.)
-fb-scraper==0.6.1          # For Facebook video scraping (including private media)
-beautifulsoup4==4.11.1     # For parsing HTML (used in scraping)
-lxml==4.9.3                # For fast XML and HTML parsing
-python-dotenv==1.0.0       # For loading environment variables from .env file
-aiohttp==3.8.3             # For asynchronous HTTP requests (for non-blocking media downloads)
-ffmpeg-python==0.2.0       # For handling media processing tasks
-gaana==0.0.7              # For downloading songs from Gaana
-# pyjiosaavn  # Removed for now, until an alternative is found
+# Telegram bot API
+python-telegram-bot==20.0
+
+# HTTP requests library
+requests==2.28.2
+
+# yt-dlp (for YouTube, Facebook, Instagram, etc. video downloads)
+yt-dlp==2023.12.30
+
+# PyTube (for YouTube video downloads)
+pytube==12.1.0
+
+# Spotify API library
+spotipy==2.18.0
+
+# Instagram downloader library
+instaloader==4.8.9
+
+# Facebook scraper library
+fb-scraper==0.6.1
+
+# BeautifulSoup for scraping web pages (used in multiple platforms)
+beautifulsoup4==4.11.1
+
+# LXML dependency for BeautifulSoup
+lxml==4.9.3
+
+# Python-dotenv to load environment variables from .env file
+python-dotenv==1.0.0
+
+# aiohttp for asynchronous HTTP requests (if needed)
+aiohttp==3.8.3
+
+# FFmpeg Python bindings (for media processing)
+ffmpeg-python==0.2.0
+
+# Gaana library for downloading music from Gaana
+gaana==0.0.7
+
+# Optional: If you want to handle custom media files (audio, video)
+pydub==0.25.1
+
+# Additional dependencies for handling OAuth and logins
+oauthlib==3.2.2
+requests-oauthlib==1.3.1
