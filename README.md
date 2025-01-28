@@ -12,7 +12,17 @@
 1. Clone the repository:
    ```bash
    git clone https://github.com/ifeelraam/billaDownloader.git
+```bash
+pip install -r requirements.txt
 
+```bash
+python3 bot.py
+ Or
+python bot.py
+
+
+
+   
 4. Command List for the Bot
 Here is a summary of the commands the bot will handle:
 
