@@ -2,7 +2,7 @@
 python-telegram-bot==20.0
 
 # HTTP requests library
-requests==2.25.0
+requests
 
 # yt-dlp (for YouTube, Facebook, Instagram, etc. video downloads)
 yt-dlp==2021.3.7
