@@ -1,10 +1,26 @@
+# Telegram Bot library
 python-telegram-bot==20.0
-instaloader==4.7.3
-python-dotenv==0.21.0
-requests==2.28.2
+
+# Instagram downloader
+instaloader==4.10.1  # Using a stable version
+
+# Spotify downloader
+spotipy==2.22.1    # Spotify API interaction library
+
+# For downloading content from YouTube
+yt-dlp==2023.01.01  # Latest version of yt-dlp (alternative to pytube)
+
+# Facebook SDK for API interaction
 facebook-sdk==3.1.0
-iquality==0.1.0
-yt-dlp==2023.01.01  # For YouTube downloads (alternative to pytube)
-spotipy==2.22.1    # For Spotify API interactions (if required)
-pytube==11.0.1     # For YouTube downloads (if using pytube instead of yt-dlp)
-beautifulsoup4==4.12.0  # For scraping (if required)
+
+# For downloading Gaana and JioSaavn songs (These depend on unofficial methods)
+beautifulsoup4==4.12.0  # For scraping (if needed)
+
+# Dotenv for loading environment variables
+python-dotenv==0.21.0
+
+# Requests (for HTTP requests, might be needed for APIs or scraping)
+requests==2.28.2
+
+# iquality (Ensure this is a local module, if it's not a published package, you'll need to ensure it's available)
+iquality==0.1.0  # Assuming this is a local module
