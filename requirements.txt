@@ -14,7 +14,7 @@ pytube==12.1.0
 spotipy==2.18.0
 
 # Instagram downloader library
-instaloader==4.8.9
+instaloader==4.14.1
 
 # Facebook scraper library
 fb-scraper==0.6.1
