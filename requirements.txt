@@ -11,10 +11,10 @@ yt-dlp==2021.3.7
 pytube==12.1.0
 
 # Spotify API library
-spotipy==2.18.0
+spotipy
 
 # Instagram downloader library
-instaloader==4.14.1
+instaloader
 
 # Facebook scraper library
 facebook-scraper==0.2.59
